@@ -37,8 +37,25 @@ fn scan_ips() {
 
 fn request_ip(ip: &str) {
     let resp = reqwest::blocking::get(&format!("https://api.mcsrvstat.us/2/{}", ip));
-    let response = resp.expect("").text().expect("");
-    if response.contains("online\":true") {
-        println!("{}", ip);
+
+    match resp {
+        Ok(resp) => {
+            let response = resp.text();
+            match response {
+                Ok(text) => {
+                    if text.contains("online\":true") {
+                        println!("{}", ip);
+                    }
+                }
+                Err(e) => {
+                    println!("Error: {}", e);
+                }
+            }
+        }
+        Err(e) => {
+            println!("Error: {}", e);
+        }
     }
+
+
 }
