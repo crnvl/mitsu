@@ -23,15 +23,7 @@ fn scan_ips() {
                         //     "Requesting on: {}.{}.{}.{}:25565\r",
                         //     mon_one, mon_two, mon_three, mon_four
                         // );
-                        if request_ip(&format!(
-                            "{}.{}.{}.{}",
-                            mon_one, mon_two, mon_three, mon_four
-                        )) {
-                            println!(
-                                "{}.{}.{}.{} is online",
-                                mon_one, mon_two, mon_three, mon_four
-                            );
-                        }
+                        request_ip(&format!("{}.{}.{}.{}:25565", mon_one, mon_two, mon_three, mon_four));
                     }
                 }
             }
@@ -43,8 +35,10 @@ fn scan_ips() {
     }
 }
 
-fn request_ip(ip: &str) -> bool {
+fn request_ip(ip: &str) {
     let resp = reqwest::blocking::get(&format!("https://api.mcsrvstat.us/2/{}", ip));
-    let response = resp.unwrap().text().unwrap();
-    response.contains("online\":true")
+    let response = resp.expect("").text().expect("");
+    if response.contains("online\":true") {
+        println!("{}", ip);
+    }
 }
