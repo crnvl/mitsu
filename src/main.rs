@@ -48,12 +48,12 @@ fn request_ip(ip: &str) {
                     }
                 }
                 Err(e) => {
-                    println!("Error: {}", e);
+                    
                 }
             }
         }
         Err(e) => {
-            println!("Error: {}", e);
+            
         }
     }
 
