@@ -19,10 +19,10 @@ fn scan_ips() {
             for mon_two in (0..255).rev() {
                 for mon_three in (0..255).rev() {
                     for mon_four in (0..255).rev() {
-                        println!(
-                            "{}.{}.{}.{}\r",
-                            mon_one, mon_two, mon_three, mon_four
-                        );
+                        // println!(
+                        //     "{}.{}.{}.{}\r",
+                        //     mon_one, mon_two, mon_three, mon_four
+                        // );
                         request_ip(&format!("{}.{}.{}.{}", mon_one, mon_two, mon_three, mon_four));
                     }
                 }
