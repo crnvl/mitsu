@@ -15,8 +15,8 @@ fn scan_ips() {
     let mut threads: Vec<thread::JoinHandle<()>> = vec![];
 
     for mon_one in (1..223).rev() {
-        for mon_two in (0..255).rev() {
-            threads.push(thread::spawn(move || {
+        threads.push(thread::spawn(move || {
+            for mon_two in (0..255).rev() {
                 for mon_three in (0..255).rev() {
                     for mon_four in (0..255).rev() {
                         // println!(
@@ -34,8 +34,8 @@ fn scan_ips() {
                         }
                     }
                 }
-            }));
-        }
+            }
+        }));
     }
 
     for thread in threads {
