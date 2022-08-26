@@ -1,4 +1,4 @@
-use std::time::SystemTime;
+use std::{thread, time::SystemTime};
 
 fn main() {
     println!("Scanning the web... (this may take weeks to complete, online servers will be printed into the console)");
@@ -12,26 +12,34 @@ fn main() {
 }
 
 fn scan_ips() {
+    let mut threads: Vec<thread::JoinHandle<()>> = vec![];
+
     for mon_one in (1..223).rev() {
         for mon_two in (0..255).rev() {
-            for mon_three in (0..255).rev() {
-                for mon_four in (0..255).rev() {
-                    // println!(
-                    //     "Requesting on: {}.{}.{}.{}:25565\r",
-                    //     mon_one, mon_two, mon_three, mon_four
-                    // );
-                    if request_ip(&format!(
-                        "{}.{}.{}.{}",
-                        mon_one, mon_two, mon_three, mon_four
-                    )) {
-                        println!(
-                            "{}.{}.{}.{} is online",
+            threads.push(thread::spawn(move || {
+                for mon_three in (0..255).rev() {
+                    for mon_four in (0..255).rev() {
+                        // println!(
+                        //     "Requesting on: {}.{}.{}.{}:25565\r",
+                        //     mon_one, mon_two, mon_three, mon_four
+                        // );
+                        if request_ip(&format!(
+                            "{}.{}.{}.{}",
                             mon_one, mon_two, mon_three, mon_four
-                        );
+                        )) {
+                            println!(
+                                "{}.{}.{}.{} is online",
+                                mon_one, mon_two, mon_three, mon_four
+                            );
+                        }
                     }
                 }
-            }
+            }));
         }
+    }
+
+    for thread in threads {
+        thread.join().unwrap();
     }
 }
 
