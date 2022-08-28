@@ -56,6 +56,4 @@ fn request_ip(ip: &str) {
             
         }
     }
-
-
 }
